@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    restart: on-failure
+    ports:
+      - 5004:80
+    depends_on:
+      - backend
+    volumes:
+      - ./:/app # for live-reloading code
+    networks:
+      - internal
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    volumes:
+      - ./:/app # for live-reloading code
+    ports:
+      -  5005:80
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
